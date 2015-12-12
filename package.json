@@ -1,0 +1,21 @@
+{
+  "name": "mrspider-css-image-extraction",
+  "version": "0.0.1",
+  "description": "mrspider middleware to extract image urls from a webpage.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha --recursive",
+    "test-watch": "mocha --recursive --watch",
+    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha  --reporter dot --check-leaks test/ --recursive",
+    "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*"
+  },
+  "author": "Sean Hayes <seanowenhayes@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "istanbul": "^0.4.1",
+    "mocha": "^2.3.4"
+  }
+}
