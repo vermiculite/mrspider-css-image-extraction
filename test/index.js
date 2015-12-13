@@ -1,6 +1,7 @@
 var cssImageExtraction = require('..');
 var chai = require('chai');
 var should = chai.should();
+var cheerio = require('cheerio');
 
 describe('mrspider-css-image-extraction', function() {
 
@@ -34,11 +35,20 @@ describe('mrspider-css-image-extraction', function() {
         validPage.data.msg.should.equal('hi');
     });
 
-    it('should extract images', function() {
+    it('should extract images', function(done) {
         validPage.content = `
-            <div> <a href="main.jpeg" class="main"></a><a href="thumb1.jpg" class="thumb"></a><a href="thumb2.jpg" class="thumb"></a><a href="thumb3.jpg" class="thumb"></a></div>
+            <div> <img src="main.jpg" class="main"/><img src="thumb1.jpg" class="thumb"/><img src="thumb2.jpg" class="thumb"/><img src="thumb3.jpg" class="thumb"/></div>
         `;
-        var imageExtraction = cssImageExtraction(validOptions);
+        validPage.$ = cheerio.load(validPage.content);
+        var imageExtraction = cssImageExtraction({
+            main: '.main',
+            thumbs: '.thumb'
+        });
+        imageExtraction(validPage, validSpider, function() {
+            validPage.data.main.should.deep.equal(['main.jpg']);
+            validPage.data.thumbs.should.deep.equal(['thumb1.jpg','thumb2.jpg','thumb3.jpg']);
+            done();
+        });
 
     });
 });
