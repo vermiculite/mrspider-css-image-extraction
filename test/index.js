@@ -51,4 +51,21 @@ describe('mrspider-css-image-extraction', function() {
         });
 
     });
+
+    it('should not extract images given an empty src', function(done) {
+        validPage.content = `
+            <div> <img src="main.jpg" class="main"/><img src="" class="main"/><img src="thumb1.jpg" class="thumb"/><img src="thumb2.jpg" class="thumb"/><img src="thumb3.jpg" class="thumb"/><img class="thumb"/></div>
+        `;
+        validPage.$ = cheerio.load(validPage.content);
+        var imageExtraction = cssImageExtraction({
+            main: '.main',
+            thumbs: '.thumb'
+        });
+        imageExtraction(validPage, validSpider, function() {
+            validPage.data.main.should.deep.equal(['main.jpg']);
+            validPage.data.thumbs.should.deep.equal(['thumb1.jpg','thumb2.jpg','thumb3.jpg']);
+            done();
+        });
+
+    });
 });
