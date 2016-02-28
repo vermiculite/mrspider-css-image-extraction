@@ -1,6 +1,10 @@
+"use strict";
+
+let through2 = require('through2');
+
 module.exports = function (options, alternateSrcAttribute) {
     var srcAttribute = alternateSrcAttribute || 'src';
-    return function (page, spider, next) {
+    return through2(function (page, next) {
         page.data = page.data || {};
         Object.keys(options).forEach(function (key) {
             page.$(options[key]).each(function () {
@@ -12,5 +16,5 @@ module.exports = function (options, alternateSrcAttribute) {
             });
         });
         next();
-    }
+    })
 };

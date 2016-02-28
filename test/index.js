@@ -13,25 +13,26 @@ describe('mrspider-css-image-extraction', function() {
     beforeEach(function() {
         validPage = {};
         validSpider = {};
+        validPage.spider = validSpider;
         validNext = function() {};
         validOptions = {};
     });
 
     it('should call the next argument', function(done) {
         var imageExtraction = cssImageExtraction(validOptions);
-        imageExtraction(validPage, validSpider, done);
+        imageExtraction._transform(validPage, done);
     });
 
     it('should create a data property on the page', function() {
         var imageExtraction = cssImageExtraction(validOptions);
-        imageExtraction(validPage, validSpider, validNext);
+        imageExtraction._transform(validPage, validNext);
         should.exist(validPage.data);
     });
 
     it('should not overwrite an existing data property on the page', function() {
         var imageExtraction = cssImageExtraction(validOptions);
         validPage.data = {msg: 'hi'};
-        imageExtraction(validPage, validSpider, validNext);
+        imageExtraction._transform(validPage, validNext);
         validPage.data.msg.should.equal('hi');
     });
 
@@ -44,7 +45,7 @@ describe('mrspider-css-image-extraction', function() {
             main: '.main',
             thumbs: '.thumb'
         });
-        imageExtraction(validPage, validSpider, function() {
+        imageExtraction._transform(validPage, function() {
             validPage.data.main.should.deep.equal(['main.jpg']);
             validPage.data.thumbs.should.deep.equal(['thumb1.jpg','thumb2.jpg','thumb3.jpg']);
             done();
@@ -61,7 +62,7 @@ describe('mrspider-css-image-extraction', function() {
             main: '.main',
             thumbs: '.thumb'
         });
-        imageExtraction(validPage, validSpider, function() {
+        imageExtraction._transform(validPage, function() {
             validPage.data.main.should.deep.equal(['main.jpg']);
             validPage.data.thumbs.should.deep.equal(['thumb1.jpg','thumb2.jpg','thumb3.jpg']);
             done();
@@ -77,7 +78,7 @@ describe('mrspider-css-image-extraction', function() {
             main: '.main',
             thumbs: '.thumb'
         }, 'asd');
-        imageExtraction(validPage, validSpider, function () {
+        imageExtraction._transform(validPage, function () {
             validPage.data.main.should.deep.equal(['main.jpg']);
             validPage.data.thumbs.should.deep.equal(['thumb1.jpg', 'thumb2.jpg', 'thumb3.jpg']);
             done();
