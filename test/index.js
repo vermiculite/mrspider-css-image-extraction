@@ -20,19 +20,19 @@ describe('mrspider-css-image-extraction', function() {
 
     it('should call the next argument', function(done) {
         var imageExtraction = cssImageExtraction(validOptions);
-        imageExtraction._transform(validPage, done);
+        imageExtraction._transform(validPage, 'utf8', done);
     });
 
     it('should create a data property on the page', function() {
         var imageExtraction = cssImageExtraction(validOptions);
-        imageExtraction._transform(validPage, validNext);
+        imageExtraction._transform(validPage, 'utf8', validNext);
         should.exist(validPage.data);
     });
 
     it('should not overwrite an existing data property on the page', function() {
         var imageExtraction = cssImageExtraction(validOptions);
         validPage.data = {msg: 'hi'};
-        imageExtraction._transform(validPage, validNext);
+        imageExtraction._transform(validPage, 'utf8', validNext);
         validPage.data.msg.should.equal('hi');
     });
 
@@ -45,7 +45,7 @@ describe('mrspider-css-image-extraction', function() {
             main: '.main',
             thumbs: '.thumb'
         });
-        imageExtraction._transform(validPage, function() {
+        imageExtraction._transform(validPage, 'utf8', function() {
             validPage.data.main.should.deep.equal(['main.jpg']);
             validPage.data.thumbs.should.deep.equal(['thumb1.jpg','thumb2.jpg','thumb3.jpg']);
             done();
@@ -62,7 +62,7 @@ describe('mrspider-css-image-extraction', function() {
             main: '.main',
             thumbs: '.thumb'
         });
-        imageExtraction._transform(validPage, function() {
+        imageExtraction._transform(validPage, 'utf8', function() {
             validPage.data.main.should.deep.equal(['main.jpg']);
             validPage.data.thumbs.should.deep.equal(['thumb1.jpg','thumb2.jpg','thumb3.jpg']);
             done();
@@ -78,7 +78,7 @@ describe('mrspider-css-image-extraction', function() {
             main: '.main',
             thumbs: '.thumb'
         }, 'asd');
-        imageExtraction._transform(validPage, function () {
+        imageExtraction._transform(validPage, 'utf8', function () {
             validPage.data.main.should.deep.equal(['main.jpg']);
             validPage.data.thumbs.should.deep.equal(['thumb1.jpg', 'thumb2.jpg', 'thumb3.jpg']);
             done();
