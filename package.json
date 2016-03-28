@@ -1,6 +1,6 @@
 {
   "name": "mrspider-css-image-extraction",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "mrspider middleware to extract image urls from a webpage.",
   "main": "index.js",
   "directories": {
